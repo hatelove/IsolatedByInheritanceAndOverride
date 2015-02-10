@@ -3,6 +3,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace IsolatedByInheritanceAndOverride.Test
 {
@@ -74,6 +75,9 @@ namespace IsolatedByInheritanceAndOverride.Test
 
             target.SetOrders(orders);
 
+            var stubBookDao = Substitute.For<IBookDao>();
+            target.SetBookDao(stubBookDao);
+
             //act
             target.SyncBookOrders();
 
@@ -85,6 +89,7 @@ namespace IsolatedByInheritanceAndOverride.Test
     internal class StubOrderService : OrderService
     {
         private List<Order> _orders = new List<Order>();
+        private IBookDao _bookDao;
 
         // only for test project to set the return values
         internal void SetOrders(List<Order> orders)
@@ -96,6 +101,16 @@ namespace IsolatedByInheritanceAndOverride.Test
         protected override List<Order> GetOrders()
         {
             return this._orders;
+        }
+
+        internal void SetBookDao(IBookDao bookDao)
+        {
+            this._bookDao = bookDao;
+        }
+
+        internal override IBookDao GetBookDao()
+        {
+            return this._bookDao;
         }
     }
 }
