@@ -10,7 +10,7 @@ namespace IsolatedByInheritanceAndOverride
 {
     public class OrderService
     {
-        private string _filePath= @"C:\temp\joey.csv";
+        private string _filePath = @"C:\temp\joey.csv";
 
         public void SyncBookOrders()
         {
@@ -19,11 +19,17 @@ namespace IsolatedByInheritanceAndOverride
             // only get orders of book
             var ordersOfBook = orders.Where(x => x.Type == "Book");
 
-            var bookDao = new BookDao();
+            // extract method to get BookDao
+            var bookDao = this.GetBookDao();
             foreach (var order in ordersOfBook)
             {
                 bookDao.Insert(order);
             }
+        }
+
+        private BookDao GetBookDao()
+        {
+            return new BookDao();
         }
 
         protected virtual List<Order> GetOrders()
