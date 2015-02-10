@@ -65,4 +65,21 @@ namespace IsolatedByInheritanceAndOverride.Test
             // hard to isolate dependency to unit test
         }
     }
+
+    internal class StubOrderService : OrderService
+    {
+        private List<Order> _orders= new List<Order>();
+
+        // only for test project to set the return values
+        internal void SetOrders(List<Order> orders)
+        {
+            this._orders = orders;
+        }
+
+        // return the stub values, isolated the File I/O of parsing csv file
+        protected override List<Order> GetOrders()
+        {
+            return this._orders;
+        }
+    }
 }
