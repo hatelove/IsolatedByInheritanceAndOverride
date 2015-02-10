@@ -27,7 +27,7 @@ namespace IsolatedByInheritanceAndOverride
             }
         }
 
-        private BookDao GetBookDao()
+        internal virtual IBookDao GetBookDao()
         {
             return new BookDao();
         }
@@ -86,14 +86,18 @@ namespace IsolatedByInheritanceAndOverride
         public string CustomerName { get; set; }
     }
 
-    public class BookDao
+    internal class BookDao : IBookDao
     {
-        internal void Insert(Order order)
+        public void Insert(Order order)
         {
             // directly depend on some web service
             var client = new HttpClient();
             client.PostAsync<Order>("http://api.joey.io/Order", order, new JsonMediaTypeFormatter());
-
         }
+    }
+
+    internal interface IBookDao
+    {
+        void Insert(Order order);
     }
 }
