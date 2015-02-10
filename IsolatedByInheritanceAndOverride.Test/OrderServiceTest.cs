@@ -63,7 +63,7 @@ namespace IsolatedByInheritanceAndOverride.Test
         [TestMethod]
         public void Test_SyncBookOrders_3_Orders_Only_2_book_order()
         {
-            // hard to isolate dependency to unit test
+            //arrange
             var target = new StubOrderService();
 
             var orders = new List<Order>
@@ -80,8 +80,10 @@ namespace IsolatedByInheritanceAndOverride.Test
 
             //act
             target.SyncBookOrders();
-
-            // how to assert interaction of target and web service ?
+            
+            // assert
+            // there are 2 orders of Type="Book", so IBookDao.Insert() should be called 2 times
+            stubBookDao.ReceivedWithAnyArgs(2).Insert(new Order());
 
         }
     }
