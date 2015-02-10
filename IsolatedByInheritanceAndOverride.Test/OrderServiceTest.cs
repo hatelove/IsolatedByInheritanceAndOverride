@@ -63,12 +63,28 @@ namespace IsolatedByInheritanceAndOverride.Test
         public void Test_SyncBookOrders_3_Orders_Only_2_book_order()
         {
             // hard to isolate dependency to unit test
+            var target = new StubOrderService();
+
+            var orders = new List<Order>
+            {
+                new Order{ Type="Book", Price = 100, ProductName = "91's book"},
+                new Order{ Type="CD", Price = 200, ProductName = "91's CD"},
+                new Order{ Type="Book", Price = 300, ProductName = "POP book"},
+            };
+
+            target.SetOrders(orders);
+
+            //act
+            target.SyncBookOrders();
+
+            // how to assert interaction of target and web service ?
+
         }
     }
 
     internal class StubOrderService : OrderService
     {
-        private List<Order> _orders= new List<Order>();
+        private List<Order> _orders = new List<Order>();
 
         // only for test project to set the return values
         internal void SetOrders(List<Order> orders)
